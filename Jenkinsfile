@@ -11,9 +11,9 @@ pipeline {
                 echo 'Logging Into the Private ECR Registry'
                 script {
                     GIT_COMMIT_HASH = sh (script: "git log -n 1 --pretty=format:'%H'", returnStdout: true)
-                    ACCOUNT_REGISTRY_PREFIX = "089778365617.dkr.ecr.us-east-1.amazonaws.com"
+                    ACCOUNT_REGISTRY_PREFIX = "519743398976.dkr.ecr.ap-southeast-1.amazonaws.com"
                     sh """
-                    \$(aws ecr get-login --no-include-email --region us-east-1)
+                    \$(aws ecr get-login --no-include-email --region ap-southeast-1)
                     """
                 }
             }
@@ -61,7 +61,7 @@ pipeline {
             }
         }
 
- 
+
         stage('Deploy to Production fixed server') {
             when {
                 branch 'release'
@@ -71,7 +71,7 @@ pipeline {
                 script {
                     productionImage.push("deploy")
                     sh """
-                       aws ec2 reboot-instances --region us-east-1 --instance-ids i-0e438e2bf64427c9d
+                       aws ec2 reboot-instances --region ap-southeast-1 --instance-ids i-0c8119f21850c2ee5
                     """
                 }
             }
@@ -106,7 +106,7 @@ pipeline {
             }
         }
 
- 
+
         stage('Deploy to Production') {
             when {
                 branch 'master'
